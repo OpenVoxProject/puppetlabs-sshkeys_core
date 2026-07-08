@@ -76,10 +76,32 @@ describe Puppet::Type.type(:sshkey) do
       }.to raise_error(Puppet::Error, %r{cannot include whitespace})
     end
 
-    it "doesn't accept leading or trailing whitespace in the key contents" do
+    it 'accepts a key with no whitespace' do
+      described_class.new(name: 'foo', key: 'AAAFA==')
+    end
+
+    it "doesn't accept leading whitespace in the key contents" do
       expect {
         described_class.new(name: 'foo', key: ' AAAFA==')
-      }.to raise_error(Puppet::Error, %r{Key must contain neither leading nor trailing whitespace})
+      }.to raise_error(Puppet::Error, %r{Key must not contain whitespace})
+    end
+
+    it "doesn't accept trailing whitespace in the key contents" do
+      expect {
+        described_class.new(name: 'foo', key: 'AAAFA== ')
+      }.to raise_error(Puppet::Error, %r{Key must not contain whitespace})
+    end
+
+    it "doesn't accept embedded newlines in the key contents" do
+      expect {
+        described_class.new(name: 'foo', key: "AAAFA==\nattacker.evil.com ssh-rsa AAAAB3Nza")
+      }.to raise_error(Puppet::Error, %r{Key must not contain whitespace})
+    end
+
+    it 'does not leak the embedded newline into the raised error message' do
+      expect {
+        described_class.new(name: 'foo', key: "AAAFA==\nattacker.evil.com ssh-rsa AAAAB3Nza")
+      }.to raise_error(Puppet::Error) { |error| expect(error.message.lines.count).to eq(1) }
     end
 
     it "doesn't accept aliases in the resourcename" do
