@@ -87,6 +87,8 @@ module Puppet
         * Key identifiers / comments, such as 'joe@joescomputer.local' --- put these in
           the `name` attribute/resource title."
 
+      # TODO: PA-8940: interpolates the raw value into the error message, unlike sshkey.rb's key property;
+      # an embedded newline leaks into Puppet::Error#message. Also \s misses Unicode/control-byte whitespace.
       validate do |value|
         raise Puppet::Error, _('Key must not contain whitespace: %{value}') % ({ value: }) if %r{\s}.match?(value)
       end

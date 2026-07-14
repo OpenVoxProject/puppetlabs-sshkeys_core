@@ -183,7 +183,7 @@ specified as an array.
 ##### `key`
 
 The key itself; generally a long string of unencoded characters. The `key`
-attribute may not contain leading or trailing whitespace.
+attribute may not contain any whitespace, including embedded newlines.
 
 Make sure to omit the following in this attribute (and specify them in
 other attributes):

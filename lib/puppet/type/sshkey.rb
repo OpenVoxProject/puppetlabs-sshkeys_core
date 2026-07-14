@@ -53,14 +53,15 @@ module Puppet
 
     newproperty(:key) do
       desc "The key itself; generally a long string of unencoded characters. The `key`
-        attribute may not contain leading or trailing whitespace.
+        attribute may not contain any whitespace, including embedded newlines.
 
         Make sure to omit the following in this attribute (and specify them in
         other attributes):
 
         * Key headers, such as 'ssh-rsa' --- put these in the `type` attribute."
+      # TODO: PA-8940: \s is ASCII-only and won't catch Unicode line separators (U+2028 etc.) or NUL/control bytes.
       validate do |value|
-        raise Puppet::Error, _('Key must contain neither leading nor trailing whitespace: %{value}') % ({ value: }) if %r{^\s|\s$}.match?(value)
+        raise Puppet::Error, _('Key must not contain whitespace: %{value}') % ({ value: value.inspect }) if %r{\s}.match?(value)
       end
     end
 
@@ -103,6 +104,7 @@ module Puppet
       end
     end
 
+    # TODO: PA-8940: this property accepts any string with no validation, an unconstrained file-write destination.
     newproperty(:target) do
       desc "The file in which to store the ssh key.  Only used by
         the `parsed` provider."
