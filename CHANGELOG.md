@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v3.0.2](https://github.com/puppetlabs/puppetlabs-sshkeys_core/tree/v3.0.2) - 2026-07-17
+
+[Full Changelog](https://github.com/puppetlabs/puppetlabs-sshkeys_core/compare/v3.0.1...v3.0.2)
+
+### Other
+
+- (PA-8911) Reject embedded whitespace in sshkey key [#1](https://github.com/puppetlabs/puppetlabs-sshkeys_core-private/pull/1) ([mhashizume](https://github.com/mhashizume))
+
 ## [v3.0.1](https://github.com/puppetlabs/puppetlabs-sshkeys_core/tree/v3.0.1) - 2025-11-26
 
 [Full Changelog](https://github.com/puppetlabs/puppetlabs-sshkeys_core/compare/v3.0.0...v3.0.1)
